@@ -6,7 +6,7 @@ You can also use it to convert your WordPress blog into a Hugo blog. Tutorial co
 
 Note:
 - This tool is still under development.
-- This tool is not perfect, it will not convert everything.
+- This tool is not perfect, it will not convert everything. If you find a bug, please open a PR.
 
 ## Usage
 
