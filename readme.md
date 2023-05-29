@@ -15,5 +15,9 @@ pip install -r requirements.txt
 python3 jekyll-to-hugo.py <jekyll_post_path> <hugo_post_path>
 ```
 
+To change the config, edit `config.yaml`.
+
+The configuration file path can be configured with the `CONFIG_PATH` environment variable.
+
 ---
 Made with ❤️ by [NucuLabs.dev](https://nuculabs.dev)
