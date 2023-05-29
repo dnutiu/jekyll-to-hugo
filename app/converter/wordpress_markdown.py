@@ -3,6 +3,8 @@ from pathlib import Path
 import yaml
 from bs4 import BeautifulSoup, Tag
 
+from app import utils
+from app.config import Configurator
 from app.utils import key_error_silence
 
 
@@ -10,6 +12,18 @@ class WordpressMarkdownConverter:
     """
     Markdown converter that converts jekyll posts to hugo posts.
     """
+
+    def __init__(self, configurator: Configurator):
+        """
+        Initializes the WordpressMarkdownConverter
+
+        Parameters
+        ----------
+        configurator : Configurator
+            The configurator instance.
+        """
+        utils.guard_against_none(configurator, "configurator")
+        self.configurator = configurator
 
     def fix_hugo_header(self, header: dict) -> dict:
         """
@@ -34,7 +48,7 @@ class WordpressMarkdownConverter:
         with key_error_silence():
             del header["wordads_ufa"]
         header["guid"] = header["guid"].replace("http://localhost", "")
-        header["author"] = "Denis Nuțiu"
+        header["author"] = self.configurator.converter_options.author_rewrite
         return header
 
     def remove_html_tags(self, post_lines):
@@ -46,11 +60,13 @@ class WordpressMarkdownConverter:
             soup = BeautifulSoup(line)
             for content in soup.contents:
                 if isinstance(content, Tag):
+                    # Check if it is a youtube video and add it as a shortcode.
                     if "is-provider-youtube" in content.attrs.get("class", []):
                         video_link = content.findNext("iframe").attrs["src"]
                         video_id_part = video_link.rsplit("/")
                         video_id = video_id_part[-1].split("?")[0]
                         fixed_lines.append(f"{{{{< youtube {video_id} >}}}}\n")
+                    # Fix unknown tags.
                     else:
                         tags = list(map(str, content.contents))
                         if tags:
@@ -58,6 +74,7 @@ class WordpressMarkdownConverter:
                             if fixed_tags:
                                 fixed_lines.extend(fixed_tags)
                 else:
+                    # Add the content as is.
                     fixed_lines.append(str(content))
         return fixed_lines
 
@@ -76,10 +93,13 @@ class WordpressMarkdownConverter:
             The converted post content
         """
         # fix  link
-        post_content = post_content.replace("http://localhost/", "/")
-        post_content = post_content.replace(
-            "https://nuculabs.wordpress.com/", "https://nuculabs.dev/posts/"
-        )
+        for task in self.configurator.converter_options.links_rewrite:
+            source_link = task.get("source")
+            target_link = task.get("target")
+            if not source_link or not target_link:
+                continue
+            post_content = post_content.replace(source_link, target_link)
+
         # fix unknown tags
         post_lines = post_content.split("\n")
         fixed_lines = self.remove_html_tags(post_lines)
@@ -113,6 +133,9 @@ class WordpressMarkdownConverter:
         post_content : str
             The post content
         """
+        # ensure that output path exists
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
         with open(output_path, "w") as fo:
             header = ["---\n", yaml.dump(post_header), "---\n"]
             fo.writelines(header)

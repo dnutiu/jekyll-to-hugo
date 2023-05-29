@@ -1,0 +1,11 @@
+logging_level: "INFO"
+source_path: "/home/denis/PycharmProjects/jekyll-to-hugo/my_test_data/_posts"
+output_path: "/home/denis/PycharmProjects/jekyll-to-hugo/my_test_data/_posts_hugo"
+converter: "wordpress_markdown_converter"
+converter_options:
+  author_rewrite: "NucuLabs.dev"
+  links_rewrite:
+    - source: "http://localhost/"
+      target: "/"
+    - source: "https://nuculabs.wordpress.com/"
+      target: "https://nuculabs.dev/posts/"

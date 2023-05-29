@@ -1,6 +1,10 @@
 import pytest
 
-from app.utils import key_error_silence, guard_against_none_or_empty_str
+from app.utils import (
+    key_error_silence,
+    guard_against_none_or_empty_str,
+    guard_against_none,
+)
 
 
 def test_key_error_silence():
@@ -33,3 +37,9 @@ def test_guard_against_none_or_empty_str(input_data):
 
 def test_guard_against_none_or_empty_str_happy():
     guard_against_none_or_empty_str("a", "test")
+
+
+def test_guard_against_none():
+    with pytest.raises(ValueError):
+        guard_against_none(None, "test")
+    guard_against_none(1, "test")

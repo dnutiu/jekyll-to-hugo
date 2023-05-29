@@ -1,7 +1,9 @@
+import logging
 import os
 from pathlib import Path
 
 from app import utils
+from app.config import Configurator
 from app.converter.wordpress_markdown import WordpressMarkdownConverter
 
 
@@ -10,25 +12,28 @@ class Converter:
     Convert Jekyll posts to Hugo posts
     """
 
-    def __init__(self, jekyll_posts_path: str, hugo_posts_path: str):
+    def __init__(self, configurator: Configurator):
         """
         Initializes the converter
 
         Parameters
         ----------
-        jekyll_posts_path : str
-            The path to the Jekyll posts
-        hugo_posts_path : str
-            The path to the Hugo posts
+        configurator : Configurator
+            The configurator instance.
         """
-        utils.guard_against_none_or_empty_str(jekyll_posts_path, "jekyll_posts_path")
-        utils.guard_against_none_or_empty_str(hugo_posts_path, "hugo_posts_path")
+        utils.guard_against_none(configurator, "configurator")
 
-        self._jekyll_posts_path = jekyll_posts_path
-        self._hugo_posts_path = hugo_posts_path
+        self._logger = logging.getLogger(__name__)
+
+        self._jekyll_posts_path = configurator.source_path
+        self._hugo_posts_path = configurator.output_path
+
+        self._logger.info(
+            f"Using source: {self._jekyll_posts_path} output: {self._hugo_posts_path}"
+        )
 
         # The converter that converts the markdown
-        self.markdown_converter = WordpressMarkdownConverter()
+        self.markdown_converter = WordpressMarkdownConverter(configurator)
 
     def convert(self):
         """

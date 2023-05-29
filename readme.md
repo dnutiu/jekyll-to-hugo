@@ -4,6 +4,10 @@ Jekyll to Hugo Converter is a simple tool to convert Jekyll posts to Hugo posts.
 
 You can also use it to convert your WordPress blog into a Hugo blog. Tutorial coming soon.
 
+Note:
+- This tool is still under development.
+- This tool is not perfect, it will not convert everything.
+
 ## Usage
 
 ```bash

@@ -1,26 +1,23 @@
 import logging
 import sys
 
+from app.config import Configurator
 from app.converter import Converter
 
 
 def main():
+    # Configurator
+    configurator = Configurator()
+
     # Logging configuration
     logging.basicConfig(
         format="%(asctime)s %(process)d %(levelname)s %(message)s",
-        level=logging.INFO,
+        level=configurator.logging_level,
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    logger = logging.getLogger(__name__)
-
-    if len(sys.argv) != 3:
-        logger.error(
-            "Usage: python main.py <source path to jekyll posts> <output path to hugo posts>"
-        )
-        sys.exit(1)
 
     # Converter
-    converter = Converter(sys.argv[1], sys.argv[2])
+    converter = Converter(configurator)
     converter.convert()
 
 
