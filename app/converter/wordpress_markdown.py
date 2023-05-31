@@ -51,7 +51,10 @@ class WordpressMarkdownConverter:
             header["author"] = self.configurator.converter_options.author_rewrite
         return header
 
-    def remove_html_tags(self, post_lines):
+    def fix_html_tags(self, post_lines):
+        """
+        Fixes the html tags from the post lines.
+        """
         fixed_lines = []
         for line in post_lines:
             if line == "":
@@ -77,7 +80,7 @@ class WordpressMarkdownConverter:
         else:
             tags = list(map(str, content.contents))
             if tags:
-                fixed_tags = self.remove_html_tags(tags)
+                fixed_tags = self.fix_html_tags(tags)
                 if fixed_tags:
                     fixed_lines.extend(fixed_tags)
 
@@ -105,7 +108,7 @@ class WordpressMarkdownConverter:
 
         # fix unknown tags
         post_lines = post_content.split("\n")
-        fixed_lines = self.remove_html_tags(post_lines)
+        fixed_lines = self.fix_html_tags(post_lines)
 
         return "\n".join(fixed_lines)
 

@@ -62,10 +62,10 @@ def test_header_fields_drop(header_fields_drop, input_header, expected_header):
         ),
     ],
 )
-def test_remove_html_tags_detect_youtube_links(input_lines, expected_lines):
+def test_fix_html_tags_detect_youtube_links(input_lines, expected_lines):
     configurator = make_fake_configurator(
         "wordpress_markdown_converter",
         ConverterOptions(),
     )
     converter = WordpressMarkdownConverter(configurator)
-    assert converter.remove_html_tags(input_lines) == expected_lines
+    assert converter.fix_html_tags(input_lines) == expected_lines
