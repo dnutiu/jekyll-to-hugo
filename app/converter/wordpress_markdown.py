@@ -63,7 +63,7 @@ class WordpressMarkdownConverter:
                     self._fix_html_tag(content, fixed_lines)
                 else:
                     # Add the content.
-                    fixed_lines.append(handle_regex_heuristics(content))
+                    fixed_lines.append(handle_regex_heuristics(str(content)))
         return fixed_lines
 
     def _fix_html_tag(self, content, fixed_lines):
