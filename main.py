@@ -1,5 +1,4 @@
 import logging
-import sys
 
 from app.config import Configurator
 from app.converter import Converter

@@ -1,7 +1,7 @@
 import os
 
 import yaml
-from pydantic import BaseSettings, BaseModel
+from pydantic import BaseModel, BaseSettings
 
 
 def yaml_config_settings_source(settings: BaseSettings):

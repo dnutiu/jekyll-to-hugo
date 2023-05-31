@@ -1,10 +1,7 @@
 import pytest
 
-from app.utils import (
-    key_error_silence,
-    guard_against_none_or_empty_str,
-    guard_against_none,
-)
+from app.utils import (guard_against_none, guard_against_none_or_empty_str,
+                       key_error_silence)
 
 
 def test_key_error_silence():
