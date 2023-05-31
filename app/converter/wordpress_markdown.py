@@ -1,10 +1,10 @@
-from pathlib import Path
-
 import yaml
 from bs4 import BeautifulSoup, Tag
 
 from app import utils
 from app.config import Configurator
+from app.io.reader import IoReader
+from app.io.writer import IoWriter
 from app.utils import key_error_silence
 
 
@@ -106,53 +106,46 @@ class WordpressMarkdownConverter:
 
         return "\n".join(fixed_lines)
 
-    def read_jekyll_post(self, path: Path):
+    def read_jekyll_post(self, reader: IoReader):
         """
-        Read a Jekyll post from the specified path
+        Read a Jekyll post from the reader.
 
         Parameters
         ----------
-        path : Path
-            The path to the Jekyll post
+        reader : IoReader
+            The IoReader instance for reading.
         """
         # read source
-        with open(path, "r") as fh:
-            contents = fh.read()
-        return contents
+        return reader.read()
 
-    def write_hugo_post(self, output_path, post_header: dict, post_content: str):
+    def write_hugo_post(self, writer: IoWriter, post_header: dict, post_content: str):
         """
-        Write a Hugo post to the specified path
+        Write a Hugo post to the specified writer.
 
         Parameters
         ----------
-        output_path : Path
-            The path to the Hugo post
+        writer : IoWriter
+            The IoWriter instance for writing.
         post_header : dict
             The post header
         post_content : str
             The post content
         """
-        # ensure that output path exists
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        data = ["---\n", yaml.dump(post_header), "---\n", post_content]
+        writer.write("".join(data))
 
-        with open(output_path, "w") as fo:
-            header = ["---\n", yaml.dump(post_header), "---\n"]
-            fo.writelines(header)
-            fo.write(post_content)
-
-    def convert_jekyll_to_hugo(self, jekyll_post_path: Path, hugo_post_output: Path):
+    def convert_jekyll_to_hugo(self, reader: IoReader, writer: IoWriter):
         """
         Convert a Jekyll post to a Hugo post
 
         Parameters
         ----------
-        jekyll_post_path : Path
-            The path to the Jekyll post
-        hugo_post_output : Path
-            The path to the Hugo post
+        reader : IoReader
+            The IoReader instance for reading.
+        writer : IoWriter
+            The IoWriter instance for writing.
         """
-        contents = self.read_jekyll_post(jekyll_post_path)
+        contents = self.read_jekyll_post(reader)
 
         # fix header
         header = yaml.safe_load(contents.split("---")[1])
@@ -162,7 +155,7 @@ class WordpressMarkdownConverter:
         fixed_post_content = self.convert_post_content(post_content)
 
         self.write_hugo_post(
-            hugo_post_output.joinpath(jekyll_post_path.name),
+            writer,
             fixed_header,
             fixed_post_content,
         )

@@ -5,6 +5,8 @@ from pathlib import Path
 from app import utils
 from app.config import Configurator
 from app.converter.wordpress_markdown import WordpressMarkdownConverter
+from app.io.reader import FileReader
+from app.io.writer import FileWriter
 
 
 class Converter:
@@ -44,7 +46,11 @@ class Converter:
         _, _, files = next(os.walk(source_path))
         for file in files:
             source_abs_path = source_path / Path(file)
+
+            file_reader = FileReader(str(source_abs_path))
+            file_writer = FileWriter(output_path.joinpath(source_abs_path.name))
+
             self.markdown_converter.convert_jekyll_to_hugo(
-                source_abs_path,
-                output_path,
+                file_reader,
+                file_writer,
             )
