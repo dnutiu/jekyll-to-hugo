@@ -43,8 +43,10 @@ class WordpressMarkdownConverter:
             with key_error_silence():
                 del header[field]
         # rewrite header fields
-        header["guid"] = header["guid"].replace("http://localhost", "")
-        header["author"] = self.configurator.converter_options.author_rewrite
+        with key_error_silence():
+            header["guid"] = header["guid"].replace("http://localhost", "")
+        with key_error_silence():
+            header["author"] = self.configurator.converter_options.author_rewrite
         return header
 
     def remove_html_tags(self, post_lines):
@@ -53,7 +55,7 @@ class WordpressMarkdownConverter:
             if line == "":
                 fixed_lines.append("\n")
                 continue
-            soup = BeautifulSoup(line)
+            soup = BeautifulSoup(line, features="html.parser")
             for content in soup.contents:
                 if isinstance(content, Tag):
                     # Check if it is a youtube video and add it as a shortcode.
