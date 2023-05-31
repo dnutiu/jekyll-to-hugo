@@ -30,6 +30,7 @@ class Converter:
         self._jekyll_posts_path = configurator.source_path
         self._hugo_posts_path = configurator.output_path
 
+        self._logger.info("Converting posts, please wait")
         self._logger.info(
             f"Using source: {self._jekyll_posts_path} output: {self._hugo_posts_path}"
         )
@@ -44,6 +45,7 @@ class Converter:
         source_path = self._jekyll_posts_path
         output_path = Path(self._hugo_posts_path)
         _, _, files = next(os.walk(source_path))
+        posts_converted_count = 0
         for file in files:
             source_abs_path = source_path / Path(file)
 
@@ -54,3 +56,6 @@ class Converter:
                 file_reader,
                 file_writer,
             )
+            posts_converted_count += 1
+
+        self._logger.info(f"Converted {posts_converted_count} posts! 🚀")
