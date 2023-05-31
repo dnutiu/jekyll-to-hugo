@@ -23,10 +23,13 @@ class ConverterOptions(BaseModel):
         Will rewrite the author to this value for all the posts.
     links_rewrite : list[dict]
         Will rewrite the links to this value for all the posts.
+    header_fields_drop : list[str]
+        Will drop the specified header fields from the posts.
     """
 
     author_rewrite: str
     links_rewrite: list[dict]
+    header_fields_drop: list[str]
 
 
 class Configurator(BaseSettings):

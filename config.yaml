@@ -9,3 +9,8 @@ converter_options:
       target: "/"
     - source: "https://nuculabs.wordpress.com/"
       target: "https://nuculabs.dev/posts/"
+  header_fields_drop:
+    - restapi_import_id
+    - original_post_id
+    - timeline_notification
+    - wordads_ufa

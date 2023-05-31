@@ -39,14 +39,10 @@ class WordpressMarkdownConverter:
         dict
             The fixed header
         """
-        with key_error_silence():
-            del header["restapi_import_id"]
-        with key_error_silence():
-            del header["original_post_id"]
-        with key_error_silence():
-            del header["timeline_notification"]
-        with key_error_silence():
-            del header["wordads_ufa"]
+        for field in self.configurator.converter_options.header_fields_drop:
+            with key_error_silence():
+                del header[field]
+        # rewrite header fields
         header["guid"] = header["guid"].replace("http://localhost", "")
         header["author"] = self.configurator.converter_options.author_rewrite
         return header
