@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup, Tag
 
 from app import utils
 from app.config import Configurator
+from app.converter.regex_heuristics import handle_regex_heuristics
+from app.converter.tags_heuristics import convert_figure_tag_to_shortcode
 from app.io.reader import IoReader
 from app.io.writer import IoWriter
 from app.utils import key_error_silence
@@ -25,7 +27,7 @@ class WordpressMarkdownConverter:
         utils.guard_against_none(configurator, "configurator")
         self.configurator = configurator
 
-    def fix_hugo_header(self, header: dict) -> dict:
+    def fix_header(self, header: dict) -> dict:
         """
         Fix the Hugo header
 
@@ -58,23 +60,26 @@ class WordpressMarkdownConverter:
             soup = BeautifulSoup(line, features="html.parser")
             for content in soup.contents:
                 if isinstance(content, Tag):
-                    # Check if it is a youtube video and add it as a shortcode.
-                    if "is-provider-youtube" in content.attrs.get("class", []):
-                        video_link = content.findNext("iframe").attrs["src"]
-                        video_id_part = video_link.rsplit("/")
-                        video_id = video_id_part[-1].split("?")[0]
-                        fixed_lines.append(f"{{{{< youtube {video_id} >}}}}\n")
-                    # Fix unknown tags.
-                    else:
-                        tags = list(map(str, content.contents))
-                        if tags:
-                            fixed_tags = self.remove_html_tags(tags)
-                            if fixed_tags:
-                                fixed_lines.extend(fixed_tags)
+                    self._fix_html_tag(content, fixed_lines)
                 else:
-                    # Add the content as is.
-                    fixed_lines.append(str(content))
+                    # Add the content.
+                    fixed_lines.append(handle_regex_heuristics(content))
         return fixed_lines
+
+    def _fix_html_tag(self, content, fixed_lines):
+        """
+        Fixes the html tag.
+        """
+        # Check if it is a YouTube video and add it as a shortcode.
+        if "is-provider-youtube" in content.attrs.get("class", []):
+            convert_figure_tag_to_shortcode(content, fixed_lines)
+        # Fix unknown tags.
+        else:
+            tags = list(map(str, content.contents))
+            if tags:
+                fixed_tags = self.remove_html_tags(tags)
+                if fixed_tags:
+                    fixed_lines.extend(fixed_tags)
 
     def convert_post_content(self, post_content: str) -> str:
         """
@@ -147,7 +152,7 @@ class WordpressMarkdownConverter:
 
         # fix header
         header = yaml.safe_load(contents.split("---")[1])
-        fixed_header = self.fix_hugo_header(header)
+        fixed_header = self.fix_header(header)
         # fix content
         post_content = contents.split("---", 2)[2].lstrip()
         fixed_post_content = self.convert_post_content(post_content)

@@ -27,9 +27,9 @@ class ConverterOptions(BaseModel):
         Will drop the specified header fields from the posts.
     """
 
-    author_rewrite: str
-    links_rewrite: list[dict]
-    header_fields_drop: list[str]
+    author_rewrite: str = ""
+    links_rewrite: list[dict] = []
+    header_fields_drop: list[str] = []
 
 
 class Configurator(BaseSettings):
