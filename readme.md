@@ -20,4 +20,4 @@ To change the config, edit `config.yaml`.
 The configuration file path can be configured with the `CONFIG_PATH` environment variable.
 
 ---
-Made with ❤️ by [NucuLabs.dev](https://nuculabs.dev)
+Made with ❤️ by [NucuLabs.dev](https://blog.nuculabs.dev)
