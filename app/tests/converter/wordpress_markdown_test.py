@@ -15,6 +15,9 @@ from app.tests.utils import make_fake_configurator
     ],
 )
 def test_header_rewrite_author(author_rewrite, input_header, expected_header):
+    """
+    Test the header rewrite author functionality.
+    """
     configurator = make_fake_configurator(
         "wordpress_markdown_converter",
         ConverterOptions(
@@ -35,6 +38,9 @@ def test_header_rewrite_author(author_rewrite, input_header, expected_header):
     ],
 )
 def test_header_fields_drop(header_fields_drop, input_header, expected_header):
+    """
+    Test the header fields drop functionality.
+    """
     configurator = make_fake_configurator(
         "wordpress_markdown_converter",
         ConverterOptions(
@@ -63,6 +69,36 @@ def test_header_fields_drop(header_fields_drop, input_header, expected_header):
     ],
 )
 def test_fix_html_tags_detect_youtube_links(input_lines, expected_lines):
+    """
+    Ensure fix_html_tags detects youtube links.
+    """
+    configurator = make_fake_configurator(
+        "wordpress_markdown_converter",
+        ConverterOptions(),
+    )
+    converter = WordpressMarkdownConverter(configurator)
+    assert converter.fix_html_tags(input_lines) == expected_lines
+
+
+@pytest.mark.parametrize(
+    "input_lines, expected_lines",
+    [
+        ([], []),
+        ([""], ["\n"]),
+        (["<p>Test</p>"], ["Test"]),
+        (["<p>Test</p>", "<p>Test</p>"], ["Test", "Test"]),
+        (["<p>Te<span>st</span></p>"], ["Test"]),
+        (["<p>Te<span><span>s</span><span class='hi'>t</span></span></p>"], ["Test"]),
+        (
+            ["<pre>preTe<ImportantC#Tag>st</ImportantC#Tag></pre></pre>"],
+            ["preTest"],
+        ),
+    ],
+)
+def test_fix_html_tags_stripe_tag(input_lines, expected_lines):
+    """
+    Ensure fix_html_tags removes the tag and tested tags.
+    """
     configurator = make_fake_configurator(
         "wordpress_markdown_converter",
         ConverterOptions(),

@@ -82,7 +82,7 @@ class WordpressMarkdownConverter:
             if tags:
                 fixed_tags = self.fix_html_tags(tags)
                 if fixed_tags:
-                    fixed_lines.extend(fixed_tags)
+                    fixed_lines.append("".join(fixed_tags))
 
     def convert_post_content(self, post_content: str) -> str:
         """
