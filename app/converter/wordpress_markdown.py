@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup, Tag
 
 from app import utils
 from app.config import Configurator
-from app.converter.regex_heuristics import handle_regex_heuristics
+from app.converter.regex_heuristics import RegexHeuristics
 from app.converter.tags_heuristics import convert_figure_tag_to_shortcode
 from app.io.reader import IoReader
 from app.io.writer import IoWriter
@@ -26,6 +26,7 @@ class WordpressMarkdownConverter:
         """
         utils.guard_against_none(configurator, "configurator")
         self.configurator = configurator
+        self.regex_heuristics = RegexHeuristics(configurator)
 
     def fix_header(self, header: dict) -> dict:
         """
@@ -51,12 +52,60 @@ class WordpressMarkdownConverter:
             header["author"] = self.configurator.converter_options.author_rewrite
         return header
 
+    def fix_pre_content(self, post_lines: list[str]) -> list[str]:
+        """
+        Fixes the pre content from the post lines when enclosed in backticks code blocks.
+        """
+        fixed_lines = []
+        index = 0
+        while index < len(post_lines):
+            line = post_lines[index]
+            if line == "```":
+                found_enclosing = False
+                search_index = index + 1
+                while search_index < len(post_lines):
+                    if post_lines[search_index] == "```":
+                        found_enclosing = True
+                        break
+                    search_index += 1
+                if found_enclosing:
+                    for line_index, line in enumerate(
+                        post_lines[index : search_index + 1]
+                    ):
+                        if line_index == 1:
+                            regex_line = self.regex_heuristics.handle_regex_heuristics(
+                                str(line)
+                            )
+                            if regex_line:
+                                fixed_lines.append(regex_line)
+                        else:
+                            fixed_lines.append(line)
+                    index = search_index + 1
+                    continue
+            index += 1
+            fixed_lines.append(line)
+        return fixed_lines
+
     def fix_html_tags(self, post_lines):
         """
         Fixes the html tags from the post lines.
         """
         fixed_lines = []
+        is_in_code_block = False
         for line in post_lines:
+            if line.startswith("```"):
+                if is_in_code_block:
+                    is_in_code_block = False
+                else:
+                    is_in_code_block = True
+                fixed_lines.append(line)
+                continue
+
+            if is_in_code_block:
+                fixed_lines.append(line)
+                continue
+
+            # Treat empty string as a new line.
             if line == "":
                 fixed_lines.append("\n")
                 continue
@@ -66,10 +115,12 @@ class WordpressMarkdownConverter:
                     self._fix_html_tag(content, fixed_lines)
                 else:
                     # Add the content.
-                    fixed_lines.append(handle_regex_heuristics(str(content)))
+                    fixed_lines.append(
+                        self.regex_heuristics.handle_regex_heuristics(str(content))
+                    )
         return fixed_lines
 
-    def _fix_html_tag(self, content, fixed_lines):
+    def _fix_html_tag(self, content: Tag, fixed_lines: list):
         """
         Fixes the html tag.
         """
@@ -108,7 +159,8 @@ class WordpressMarkdownConverter:
 
         # fix unknown tags
         post_lines = post_content.split("\n")
-        fixed_lines = self.fix_html_tags(post_lines)
+        fixed_lines = self.fix_pre_content(post_lines)
+        fixed_lines = self.fix_html_tags(fixed_lines)
 
         return "\n".join(fixed_lines)
 

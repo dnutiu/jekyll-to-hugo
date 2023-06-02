@@ -105,3 +105,38 @@ def test_fix_html_tags_stripe_tag(input_lines, expected_lines):
     )
     converter = WordpressMarkdownConverter(configurator)
     assert converter.fix_html_tags(input_lines) == expected_lines
+
+
+@pytest.mark.parametrize(
+    "input_lines, expected_lines",
+    [
+        (
+            ["<pre>", "<p>Te<span>st</span></p>", "</pre>"],
+            ["<pre>", "<p>Te<span>st</span></p>", "</pre>"],
+        ),
+        (
+            [
+                "```",
+                '<pre class="wp-block-syntaxhighlighter-code">    <ItemGroup>',
+                "```",
+            ],
+            ["```", "    <ItemGroup>", "```"],
+        ),
+        (
+            [
+                "```",
+                '<pre class="wp-block-syntaxhighlighter-code">',
+                "<ItemGroup>",
+                "```",
+            ],
+            ["```", "<ItemGroup>", "```"],
+        ),
+    ],
+)
+def test_fix_pre_content(input_lines, expected_lines):
+    configurator = make_fake_configurator(
+        "wordpress_markdown_converter",
+        ConverterOptions(),
+    )
+    converter = WordpressMarkdownConverter(configurator)
+    assert converter.fix_pre_content(input_lines) == expected_lines
