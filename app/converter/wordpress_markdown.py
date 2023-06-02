@@ -93,6 +93,8 @@ class WordpressMarkdownConverter:
         fixed_lines = []
         is_in_code_block = False
         for line in post_lines:
+            # Enter code block mode when detecting a line that starts with ```
+            # and exit when detecting a line that starts with ```.
             if line.startswith("```"):
                 if is_in_code_block:
                     is_in_code_block = False
@@ -101,6 +103,7 @@ class WordpressMarkdownConverter:
                 fixed_lines.append(line)
                 continue
 
+            # Skip modifying the line if it is in code block mode.
             if is_in_code_block:
                 fixed_lines.append(line)
                 continue
@@ -109,12 +112,15 @@ class WordpressMarkdownConverter:
             if line == "":
                 fixed_lines.append("\n")
                 continue
+
+            # Parse the line as html and remove the HTML tags from it.
             soup = BeautifulSoup(line, features="html.parser")
             for content in soup.contents:
                 if isinstance(content, Tag):
+                    # found html tag
                     self._fix_html_tag(content, fixed_lines)
                 else:
-                    # Add the content.
+                    # found text, add it to the fixed lines
                     fixed_lines.append(
                         self.regex_heuristics.handle_regex_heuristics(str(content))
                     )
@@ -124,13 +130,15 @@ class WordpressMarkdownConverter:
         """
         Fixes the html tag.
         """
-        # Check if it is a YouTube video and add it as a shortcode.
+        # Check if tag is a YouTube video and add it as a shortcode.
         if "is-provider-youtube" in content.attrs.get("class", []):
             convert_figure_tag_to_shortcode(content, fixed_lines)
-        # Fix unknown tags.
+        # Fix unknown tags by removing the tag and only add inner content.
+        # content.contents is a list of all the inner content of the tag.
         else:
             tags = list(map(str, content.contents))
             if tags:
+                # recursively fix the inner content of the tag.
                 fixed_tags = self.fix_html_tags(tags)
                 if fixed_tags:
                     fixed_lines.append("".join(fixed_tags))
@@ -149,7 +157,7 @@ class WordpressMarkdownConverter:
         str
             The converted post content
         """
-        # fix  link
+        # fix links inside post content with simple replace
         for task in self.configurator.converter_options.links_rewrite:
             source_link = task.get("source")
             target_link = task.get("target")
