@@ -13,6 +13,16 @@ def yaml_config_settings_source(settings: BaseSettings):
         return yaml.safe_load(fh)
 
 
+class RegexHeuristics(BaseModel):
+    """
+    Regex heuristics options for applying modifying a line using regex lines.
+
+    True means option is enabled, False means option is disabled.
+    """
+
+    remove_pre_tag: bool = True
+
+
 class ConverterOptions(BaseModel):
     """
     Converter options.
@@ -30,6 +40,8 @@ class ConverterOptions(BaseModel):
     author_rewrite: str = ""
     links_rewrite: list[dict] = []
     header_fields_drop: list[str] = []
+    enable_regex_heuristics: bool = True
+    regex_heuristics: RegexHeuristics = RegexHeuristics()
 
 
 class Configurator(BaseSettings):

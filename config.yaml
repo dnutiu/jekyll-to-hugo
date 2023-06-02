@@ -3,6 +3,7 @@ source_path: "/Users/dnutiu/PycharmProjects/jekyll-to-hugo/my_test_data/_posts"
 output_path: "/Users/dnutiu/NucuLabsProjects/NucuLabsDevBlog/content/posts"
 converter: "wordpress_markdown_converter"
 converter_options:
+  enable_regex_heuristics: true
   author_rewrite: "Denis Nuțiu"
   links_rewrite:
     - source: "http://localhost/"
