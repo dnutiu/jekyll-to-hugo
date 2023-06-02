@@ -39,15 +39,13 @@ class FileWriter(IoWriter):
             fo.write(data)
 
 
-class CallbackWriter(IoWriter):
+class TestingWriter(IoWriter):
     """
     Writes a post to a string.
     """
 
-    def __init__(self, callback: Callable[[str], None]):
-        utils.guard_against_none(callback, "callback")
-
-        self.callback = callback
+    def __init__(self):
+        self.content = ""
 
     def write(self, data: str):
-        self.callback(data)
+        self.content += data

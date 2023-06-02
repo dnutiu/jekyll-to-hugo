@@ -2,6 +2,8 @@ import pytest
 
 from app.config import ConverterOptions
 from app.converter import WordpressMarkdownConverter
+from app.io.reader import StringReader
+from app.io.writer import TestingWriter
 from app.tests.utils import make_fake_configurator
 
 
@@ -155,3 +157,24 @@ def test_fix_pre_content(input_lines, expected_lines):
     )
     converter = WordpressMarkdownConverter(configurator)
     assert converter.fix_pre_content(input_lines) == expected_lines
+
+
+def test_read_jekyll_post():
+    configurator = make_fake_configurator(
+        "wordpress_markdown_converter",
+        ConverterOptions(),
+    )
+    converter = WordpressMarkdownConverter(configurator)
+    reader = StringReader("Test")
+    assert converter.read_jekyll_post(reader) == "Test"
+
+
+def test_write_hugo_post():
+    configurator = make_fake_configurator(
+        "wordpress_markdown_converter",
+        ConverterOptions(),
+    )
+    converter = WordpressMarkdownConverter(configurator)
+    writer = TestingWriter()
+    converter.write_hugo_post(writer, {"title": "Test"}, "Test\nLine 2")
+    assert writer.content == "---\ntitle: Test\n---\nTest\nLine 2"
