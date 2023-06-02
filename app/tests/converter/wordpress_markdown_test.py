@@ -131,6 +131,21 @@ def test_fix_html_tags_stripe_tag(input_lines, expected_lines):
             ],
             ["```", "<ItemGroup>", "```"],
         ),
+        (
+            [
+                "```",
+                '<pre class="wp-block-preformatted">sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev',
+                "```",
+            ],
+            [
+                "```",
+                "sudo apt-get update; sudo apt-get install --no-install-recommends make "
+                "build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev "
+                "libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev "
+                "libxmlsec1-dev libffi-dev liblzma-dev",
+                "```",
+            ],
+        ),
     ],
 )
 def test_fix_pre_content(input_lines, expected_lines):
