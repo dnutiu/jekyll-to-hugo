@@ -13,7 +13,7 @@ class RegexHeuristics:
 
         self.configurator = configurator
         self._rules = {
-            "^(</*pre.*?>)(?P<content>.*?)`{0,3}(<\/pre>)?$": self._remove_pre_tag,
+            "^(</*pre.*?>)`{0,3}(?P<content>.*?)(<\/pre>)?$": self._remove_pre_tag,
         }
 
     def _remove_pre_tag(self, match) -> str:

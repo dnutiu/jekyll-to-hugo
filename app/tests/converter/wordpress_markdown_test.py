@@ -127,6 +127,14 @@ def test_fix_html_tags_stripe_tag(input_lines, expected_lines):
         (
             [
                 "```",
+                '<pre class="wp-block-syntaxhighlighter-code">```    <ItemGroup>',
+                "```",
+            ],
+            ["```", "    <ItemGroup>", "```"],
+        ),
+        (
+            [
+                "```",
                 '<pre class="wp-block-syntaxhighlighter-code">',
                 "<ItemGroup>",
                 "```",
