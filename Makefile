@@ -11,4 +11,4 @@ build:
 upload:
 	hatch publish
 release:
-	hatch build && hatch publish
+	hatch clean && hatch build && hatch publish
