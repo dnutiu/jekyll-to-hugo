@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 from pathlib import Path
-from typing import Callable
 
 from app import utils
 

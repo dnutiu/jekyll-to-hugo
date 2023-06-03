@@ -1,4 +1,4 @@
-from app.config import ConverterOptions, Configurator
+from app.config import Configurator, ConverterOptions
 
 
 def make_fake_configurator(converter: str, converter_options: ConverterOptions):
