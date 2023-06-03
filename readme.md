@@ -17,7 +17,7 @@ Note: This tool is not perfect, it will not convert everything. If you find a bu
 
 ## Usage
 
-### PiPy
+### PiPy or Pipx
 
 If you have Python installed, you can use the following commands:
 
@@ -27,6 +27,8 @@ jekyll-to-hugo
 ```
 
 You will need to create a `config.yaml` file in the current directory. See example [here](./config.yaml).
+
+_`pipx` is a tool to install Python CLI tools in isolated environments_
 
 ### Python From Source
 
