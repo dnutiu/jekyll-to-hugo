@@ -13,6 +13,7 @@ Note: This tool is not perfect, it will not convert everything. If you find a bu
   * [Python From Source](#python-from-source)
   * [Docker](#docker)
 * [Configuration](#configuration)
+  * [Example Configuration](#example-configuration)
 * [License](#license)
 
 ## Usage
@@ -63,6 +64,34 @@ docker run -it --rm -v $(pwd):/app jekyll-to-hugo
 
 The configuration file is a YAML file. See example [here](./config.yaml).
 The configuration file path can be configured with the `CONFIG_PATH` environment variable.
+
+### Example Configuration
+
+```yaml
+logging_level: "INFO"
+source_path: "/Users/dnutiu/PycharmProjects/jekyll-to-hugo/my_test_data/_posts"
+output_path: "/Users/dnutiu/NucuLabsProjects/NucuLabsDevBlog/content/posts"
+converter: "wordpress_markdown_converter"
+converter_options:
+  enable_regex_heuristics: true
+  author_rewrite: "Denis Nuțiu"
+  links_rewrite:
+    - source: "http://localhost/"
+      target: "/"
+    - source: "https://nuculabs.wordpress.com/"
+      target: "https://nuculabs.dev/posts/"
+    - source: "https://twitter.com/metonymyqt"
+      target: "https://twitter.com/nuculabs"
+  header_fields_drop:
+    - restapi_import_id
+    - original_post_id
+    - timeline_notification
+    - wordads_ufa
+    - spay_email
+    - amp_status
+    - advanced_seo_description
+    - publicize_twitter_user
+```
 
 ## License
 
