@@ -4,3 +4,9 @@ format:
 # Run tests
 test:
 	pytest .
+# Build package
+build:
+	python -m build
+# Upload package to PyPI
+upload:
+	hatch publish
