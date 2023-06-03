@@ -2,7 +2,15 @@
 
 Jekyll to Hugo Converter is a simple tool to convert Jekyll posts to Hugo posts.
 
-I've used this tool to convert [my blog](https://blog.nuculabs.dev) from WorPress to Jekyll to Hugo.
+I've used this tool to convert [my blog](https://blog.nuculabs.dev) from WordPress to Jekyll and finally to Hugo.
+
+The tool has the following features:
+- Batch conversion.
+- Post header fields drop/ignore.
+- Links rewrite. (Search and Replace)
+- Author name rewrite.
+
+It was written in a way that is easy to extend, while I wrote it for my own personal use, I hope you'll find some use for it as well.
 
 Note: This tool is not perfect, it will not convert everything. If you find a bug, please open a PR.
 
