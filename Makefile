@@ -10,3 +10,5 @@ build:
 # Upload package to PyPI
 upload:
 	hatch publish
+release:
+	hatch build && hatch publish
