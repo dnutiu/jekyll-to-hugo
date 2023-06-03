@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jekyll-to-hugo"
-version = "0.0.3"
+version = "0.0.5"
 authors = [
   { name="Denis Nutiu", email="nuculabs@outlook.com" },
 ]
@@ -22,6 +22,12 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+  "beautifulsoup4>=4.12, <5",
+  "PyYAML",
+  "soupsieve>=2.4, <3",
+  "pydantic>=1.10, <2",
 ]
 
 [project.scripts]
