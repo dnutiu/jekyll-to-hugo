@@ -13,6 +13,15 @@ def yaml_config_settings_source(settings: BaseSettings):
         return yaml.safe_load(fh)
 
 
+def ensure_config_exists():
+    """
+    Ensure config file exist at the path specified in the environment variable CONFIG_PATH.
+    """
+    path = os.getenv("CONFIG_PATH", "config.yaml")
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Config file not found at {path}")
+
+
 class RegexHeuristics(BaseModel):
     """
     Regex heuristics options for applying modifying a line using regex lines.

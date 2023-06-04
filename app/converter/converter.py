@@ -44,18 +44,20 @@ class Converter:
         """
         source_path = self._jekyll_posts_path
         output_path = Path(self._hugo_posts_path)
-        _, _, files = next(os.walk(source_path))
         posts_converted_count = 0
-        for file in files:
-            source_abs_path = source_path / Path(file)
+        try:
+            _, _, files = next(os.walk(source_path))
+            for file in files:
+                source_abs_path = source_path / Path(file)
 
-            file_reader = FileReader(str(source_abs_path))
-            file_writer = FileWriter(output_path.joinpath(source_abs_path.name))
+                file_reader = FileReader(str(source_abs_path))
+                file_writer = FileWriter(output_path.joinpath(source_abs_path.name))
 
-            self.markdown_converter.convert_jekyll_to_hugo(
-                file_reader,
-                file_writer,
-            )
-            posts_converted_count += 1
-
-        self._logger.info(f"Converted {posts_converted_count} posts! 🚀")
+                self.markdown_converter.convert_jekyll_to_hugo(
+                    file_reader,
+                    file_writer,
+                )
+                posts_converted_count += 1
+                self._logger.info(f"Converted {posts_converted_count} posts! 🚀")
+        except StopIteration:
+            self._logger.fatal(f"Source path {source_path} does not exist!")

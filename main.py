@@ -1,11 +1,12 @@
 import logging
 
-from app.config import Configurator
+from app.config import Configurator, ensure_config_exists
 from app.converter import Converter
 
 
 def main():
     # Configurator
+    ensure_config_exists()
     configurator = Configurator()
 
     # Logging configuration
