@@ -1,3 +1,4 @@
+hatch
 black==23.3.0
 pdoc==13.1.1
 isort==5.12.0
