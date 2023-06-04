@@ -38,7 +38,7 @@ class FileWriter(IoWriter):
             fo.write(data)
 
 
-class TestingWriter(IoWriter):
+class MockWriter(IoWriter):
     """
     Writes a post to a string.
     """

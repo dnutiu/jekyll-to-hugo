@@ -12,3 +12,6 @@ upload:
 	hatch publish
 release:
 	hatch clean && hatch build && hatch publish
+# Build the tox docker image, use docker run -v "$(pwd)":"/code" jekyll-to-hugo-tox -e ci to run tox
+build-tox:
+	docker build . -f ./docker/Tox.Dockerfile -t jekyll-to-hugo-tox

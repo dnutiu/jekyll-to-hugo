@@ -3,7 +3,7 @@ import pytest
 from app.config import ConverterOptions
 from app.converter import WordpressMarkdownConverter
 from app.io.reader import StringReader
-from app.io.writer import TestingWriter
+from app.io.writer import MockWriter
 from app.tests.utils import make_fake_configurator
 
 
@@ -183,6 +183,6 @@ def test_write_hugo_post():
         ConverterOptions(),
     )
     converter = WordpressMarkdownConverter(configurator)
-    writer = TestingWriter()
+    writer = MockWriter()
     converter.write_hugo_post(writer, {"title": "Test"}, "Test\nLine 2")
     assert writer.content == "---\ntitle: Test\n---\nTest\nLine 2"

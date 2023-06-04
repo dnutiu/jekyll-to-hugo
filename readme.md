@@ -59,7 +59,7 @@ If you don't have Python installed, you can use Docker:
 1. Build the image.
 
 ```bash
-docker build -t jekyll-to-hugo .
+docker build -t jekyll-to-hugo -f ./docker/Dockerfile .
 ```
 
 2. Run the image. You will need to mount the following directories: config file, Jekyll posts directory, Hugo posts directory.

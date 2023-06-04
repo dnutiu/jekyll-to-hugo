@@ -2,11 +2,11 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
+COPY ../requirements.txt /app/requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY . /app
+COPY .. /app
 
 ENTRYPOINT [ "python" ]
 CMD [ "main.py" ]
