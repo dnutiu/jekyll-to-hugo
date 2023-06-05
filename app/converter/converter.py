@@ -58,6 +58,6 @@ class Converter:
                     file_writer,
                 )
                 posts_converted_count += 1
-                self._logger.info(f"Converted {posts_converted_count} posts! 🚀")
+            self._logger.info(f"Converted {posts_converted_count} posts! 🚀")
         except StopIteration:
             self._logger.fatal(f"Source path {source_path} does not exist!")
