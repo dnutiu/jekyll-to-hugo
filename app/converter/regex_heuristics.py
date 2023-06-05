@@ -1,9 +1,14 @@
+import dataclasses
 import re
-from collections import namedtuple
+from typing import Callable
 
 from app import utils
 
-RegexCallback = namedtuple("RegexCallback", ["callback", "name"])
+
+@dataclasses.dataclass
+class RegexCallback:
+    callback: Callable[[re.Match], str]
+    name: str
 
 
 class RegexHeuristics:
