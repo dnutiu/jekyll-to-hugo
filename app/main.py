@@ -5,6 +5,9 @@ from app.converter import Converter
 
 
 def main():
+    """
+    Main function of the program.
+    """
     # Configurator
     ensure_config_exists()
     configurator = Configurator()

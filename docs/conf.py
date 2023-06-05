@@ -8,7 +8,7 @@
 project = "Jekyll To Hugo"
 copyright = "2023-Present, Denis Nutiu and contributors"
 author = "Denis Nutiu and contributors"
-release = "0.0.7"
+release = "0.0.9"
 html_logo = "_static/nuculabs_logo.png"
 
 # -- General configuration ---------------------------------------------------
