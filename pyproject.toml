@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jekyll-to-hugo"
-version = "0.0.7"
+version = "0.0.8"
 authors = [
   { name="Denis Nutiu", email="nuculabs@outlook.com" },
 ]
@@ -31,7 +31,13 @@ dependencies = [
 jekyll-to-hugo = "main:main"
 
 [project.optional-dependencies]
-dev = ["black", "pdoc", "isort", "autoflake", "pytest"]
+dev = ["black", "isort", "autoflake", "pytest"]
+docs = [
+  "sphinx",
+  "myst_parser",
+  "sphinx-autoapi>=2.1.0, <3",
+  "furo==2023.5.20"
+]
 
 [project.urls]
 "Homepage" = "https://github.com/dnutiu/jekyll-to-hugo"

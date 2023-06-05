@@ -1,6 +1,6 @@
 logging_level: "INFO"
-source_path: "/Users/dnutiu/PycharmProjects/jekyll-to-hugo/my_test_data/_posts"
-output_path: "/Users/dnutiu/NucuLabsProjects/NucuLabsDevBlog/content/posts"
+source_path: "/home/denis/PycharmProjects/jekyll-to-hugo/my_test_data/_posts"
+output_path: "/home/denis/Projects/NucuLabsDev/content/posts"
 converter: "wordpress_markdown_converter"
 converter_options:
   enable_regex_heuristics: true

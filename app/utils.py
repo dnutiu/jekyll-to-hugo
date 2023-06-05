@@ -17,7 +17,7 @@ def guard_against_none_or_empty_str(value: str, name: str):
     Guard against None or empty string.
 
     Parameters:
-    ----------
+    -----------
     value: str
         The value to check.
     name: str
@@ -33,7 +33,7 @@ def guard_against_none(value, name: str):
     Guard against None.
 
     Parameters:
-    ----------
+    -----------
     value: str
         The value to check.
     name: str
