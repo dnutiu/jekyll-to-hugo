@@ -14,16 +14,16 @@ html_logo = "_static/nuculabs_logo.png"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['autoapi.extension', "myst_parser"]
+extensions = ["autoapi.extension", "myst_parser"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-source_suffix = ['.rst', '.md']
+source_suffix = [".rst", ".md"]
 
 # AutoAPI
-autoapi_type = 'python'
-autoapi_dirs = ['../app']
+autoapi_type = "python"
+autoapi_dirs = ["../app"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
