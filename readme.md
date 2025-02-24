@@ -106,4 +106,4 @@ converter_options:
 This project is licensed under the GPL-3.0 license - see the [LICENSE](LICENSE) file for details.
 
 ---
-Made with ❤️ by [NucuLabs.dev](https://blog.nuculabs.dev)
+Made with ❤️ by [NucuLabs](https://blog.nuculabs.de)
